@@ -16,14 +16,14 @@ function Modal({ setModalName, defaultName, modalName }) {
   console.log(modalName);
 
   // Function to handle search
-  const onSearch = (value) => {
-    setSearchValue(value);
-    let interval;
+  const onSearch = (newValue) => {
+    setSearchValue(newValue);
+    let timeoutId;
 
-    clearTimeout(interval);
+    clearTimeout(timeoutId);
 
-    interval = setTimeout(() => {
-      setCountryName(value);
+    timeoutId = setTimeout(() => {
+      setCountryName(newValue);
     }, 1000);
   };
 

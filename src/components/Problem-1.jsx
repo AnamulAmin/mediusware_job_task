@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
 
 const Problem1 = () => {
@@ -20,7 +21,7 @@ const Problem1 = () => {
       (item) => item.status === "completed"
     );
     let otherItem = immutableList.filter(
-      (item) => item.status !== "completed" && item.status === "active"
+      (item) => item.status !== "completed" && item.status !== "active"
     );
 
     // Adding new item to the appropriate list
@@ -32,16 +33,27 @@ const Problem1 = () => {
       } else {
         otherItem.push({ name, status });
       }
-      // Updating list and immutable list
-      setList([...activeItem, ...completedItem, ...otherItem]);
-      setImmutableList([...activeItem, ...completedItem, ...otherItem]);
+      // Updating list and make unique
+      const uniqueActiveItem = _.uniq(activeItem);
+      const uniqueCompletedItem = _.uniq(completedItem);
+      const uniqueOtherItem = _.uniq(otherItem);
+
+      setList([
+        ...uniqueActiveItem,
+        ...uniqueCompletedItem,
+        ...uniqueOtherItem,
+      ]);
+
+      setImmutableList([
+        ...uniqueActiveItem,
+        ...uniqueCompletedItem,
+        ...uniqueOtherItem,
+      ]);
     }
 
     // Clearing form inputs
     e.target.name.value = "";
     e.target.status.value = "";
-
-    console.log([...activeItem, completedItem, otherItem]);
   };
 
   // Function to handle filter button clicks
@@ -68,7 +80,11 @@ const Problem1 = () => {
         (item) => item.status !== "completed" && item.status === "active"
       );
 
-      setList([...activeItem, ...completedItem, ...otherItem]);
+      setList([
+        ...new Set(activeItem),
+        ...new Set(completedItem),
+        ...new Set(otherItem),
+      ]);
     }
   }, [show]);
 
